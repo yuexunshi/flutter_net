@@ -32,8 +32,10 @@ and the Flutter guide for
 ## 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+```
+dependencies:
+  flutter_nb_net: ^0.0.1
+```
 
 ## Usage
 全局配置：

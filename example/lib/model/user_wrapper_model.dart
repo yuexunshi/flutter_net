@@ -1,4 +1,4 @@
-import 'package:flutter_net/flutter_net.dart';
+import 'package:flutter_nb_net/flutter_net.dart';
 
 class UserModel extends BaseNetworkModel<UserModel> {
   UserModel({

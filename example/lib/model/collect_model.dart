@@ -1,4 +1,4 @@
-import 'package:flutter_net/flutter_net.dart';
+import 'package:flutter_nb_net/flutter_net.dart';
 
 /// curPage : 1
 /// datas : [{"author":"xiaoyang","chapterId":440,"chapterName":"官方","courseId":13,"desc":"<p>大家在日常开发过程中，应该对invalidate，requestLayout简易的区别都理解，最近准备针对这两个问题问几问。</p>\r\n<p>先来invalidate吧。</p>\r\n<ol>\r\n<li>invalidate 的执行流程是什么样子的？</li>\r\n<li>如果连续调用多次invalidate执行流程是？</li>\r\n<li>invalidate重绘的区域是如何确定的，仅是当前View还是整个View树，还是某种计算方式？</li>\r\n<li>View除了invalidate()外，还有个方法叫做postInvalidateOnAnimation()，这两个方法有何区别？</li>\r\n</ol>","envelopePic":"","id":167227,"link":"https://wanandroid.com/wenda/show/16190","niceDate":"2020-12-18 15:33","origin":"","originId":16190,"publishTime":1608276804000,"title":"每日一问 | View invalidate() 相关的一些细节探究~","userId":82504,"visible":0,"zan":0}]

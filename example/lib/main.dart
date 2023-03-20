@@ -5,7 +5,7 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_net/flutter_net.dart';
+import 'package:flutter_nb_net/flutter_net.dart';
 import 'model/banner_model.dart';
 import 'model/collect_model.dart';
 import 'model/user_model.dart';

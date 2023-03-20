@@ -1,4 +1,4 @@
-library flutter_net;
+library flutter_nb_net;
 
 export 'src/result.dart';
 export 'src/net_wrapper.dart';

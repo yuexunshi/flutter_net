@@ -31,7 +31,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_net:
+  flutter_nb_net:
     path: ../
   cookie_jar: ^3.0.1
   dio_cookie_manager: ^2.1.2 # latest version
