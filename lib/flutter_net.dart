@@ -1,7 +1,7 @@
 library flutter_nb_net;
 
 export 'src/result.dart';
-export 'src/net_wrapper.dart';
+export 'src/net_options.dart';
 export 'src/net_config.dart';
 export 'src/net_decoder.dart';
 export 'src/net_client.dart';

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
@@ -14,7 +13,7 @@ import 'my_http_decoder.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  NetWrapper.instance
+  NetOptions.instance
       // header
       .addHeaders({"aaa": '111'})
       // baseUrl
@@ -104,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Get 请求
   void requestGet() async {
     var appResponse = await get<BannerModel, BannerModel>("banner/json",
-        responseType: BannerModel());
+        decodeType: BannerModel());
     appResponse.when(success: (BannerModel model) {
       var size = model.data?.length;
       debugPrint("成功返回$size条");
@@ -117,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void requestPost() async {
     var appResponse = await post<UserWrapperModel, UserWrapperModel>(
         "user/login",
-        responseType: UserWrapperModel(),
+        decodeType: UserWrapperModel(),
         queryParameters: {
           "username": '你的账号',
           "password": '你的密码'
@@ -133,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// 自定义Decoder的 Post 请求
   void requestCustomDecoderPost() async {
     var appResponse = await post<UserModel, UserModel>("user/login",
-        responseType: UserModel(),
+        decodeType: UserModel(),
         httpDecode: MyHttpDecoder.getInstance(),
         queryParameters: {"username": '', "password": ''});
     appResponse.when(success: (UserModel model) {
@@ -147,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
   /// 自定义Decoder的 Get 请求
   void requestCustomGet() async {
     var appResponse = await get<BannerBean, List<BannerBean>>("banner/json",
-        responseType: BannerBean(), httpDecode: MyHttpDecoder.getInstance());
+        decodeType: BannerBean(), httpDecode: MyHttpDecoder.getInstance());
     appResponse.when(success: (List<BannerBean> model) {
       var size = model.length;
       debugPrint("成功返回$size条");
@@ -160,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void requestCookieGet() async {
     var appResponse = await get<CollectModel, CollectModel>(
         "lg/collect/list/0/json",
-        responseType: CollectModel(),
+        decodeType: CollectModel(),
         httpDecode: MyHttpDecoder.getInstance());
     appResponse.when(success: (CollectModel model) {
       var size = model.datas?.length;
@@ -174,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void requestCacheGet() async {
     var appResponse = await get<BannerModel, BannerModel>("banner/json",
         options: buildCacheOptions(const Duration(days: 7)),
-        responseType: BannerModel());
+        decodeType: BannerModel());
     appResponse.when(success: (BannerModel model) {
       var size = model.data?.length;
       debugPrint("成功返回$size条");
@@ -187,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void requestCallBack() async {
     var appResponse = await get<BannerModel, List<BannerBean>>("banner/json",
         options: buildCacheOptions(const Duration(days: 7)),
-        responseType: BannerModel(), converter: (response) {
+        decodeType: BannerModel(), converter: (response) {
           var errorCode = response.data['errorCode'];
           /// 请求成功
           if (errorCode == 0) {

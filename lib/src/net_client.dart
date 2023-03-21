@@ -15,11 +15,11 @@ Future<Result<K>> get<T extends BaseNetworkModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T responseType,
+  required T decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
-  return await _realRequest(
+  return await _execute(
     path,
     'GET',
     data: data,
@@ -29,7 +29,7 @@ Future<Result<K>> get<T extends BaseNetworkModel, K>(
     onReceiveProgress: onReceiveProgress,
     httpDecode: httpDecode,
     converter: converter,
-    responseType: responseType,
+    decodeType: decodeType,
   );
 }
 
@@ -44,11 +44,11 @@ Future<Result<K>> post<T extends BaseNetworkModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T responseType,
+  required T decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
-  return await _realRequest(
+  return await _execute(
     path,
     'POST',
     data: data,
@@ -59,7 +59,7 @@ Future<Result<K>> post<T extends BaseNetworkModel, K>(
     onReceiveProgress: onReceiveProgress,
     httpDecode: httpDecode,
     converter: converter,
-    responseType: responseType,
+    decodeType: decodeType,
   );
 }
 
@@ -74,11 +74,11 @@ Future<Result<K>> put<T extends BaseNetworkModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T responseType,
+  required T decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
-  return await _realRequest(
+  return await _execute(
     path,
     'PUT',
     data: data,
@@ -89,7 +89,7 @@ Future<Result<K>> put<T extends BaseNetworkModel, K>(
     onReceiveProgress: onReceiveProgress,
     httpDecode: httpDecode,
     converter: converter,
-    responseType: responseType,
+    decodeType: decodeType,
   );
 }
 
@@ -102,11 +102,11 @@ Future<Result<K>> head<T extends BaseNetworkModel, K>(
   CancelToken? cancelToken,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T responseType,
+  required T decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
-  return await _realRequest(
+  return await _execute(
     path,
     'HEAD',
     data: data,
@@ -115,7 +115,7 @@ Future<Result<K>> head<T extends BaseNetworkModel, K>(
     cancelToken: cancelToken,
     httpDecode: httpDecode,
     converter: converter,
-    responseType: responseType,
+    decodeType: decodeType,
   );
 }
 
@@ -128,11 +128,11 @@ Future<Result<K>> delete<T extends BaseNetworkModel, K>(
   CancelToken? cancelToken,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T responseType,
+  required T decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
-  return await _realRequest(
+  return await _execute(
     path,
     'DELETE',
     data: data,
@@ -141,7 +141,7 @@ Future<Result<K>> delete<T extends BaseNetworkModel, K>(
     cancelToken: cancelToken,
     httpDecode: httpDecode,
     converter: converter,
-    responseType: responseType,
+    decodeType: decodeType,
   );
 }
 
@@ -156,11 +156,11 @@ Future<Result<K>> patch<T extends BaseNetworkModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T responseType,
+  required T decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
-  return await _realRequest(
+  return await _execute(
     path,
     'PATCH',
     data: data,
@@ -171,7 +171,7 @@ Future<Result<K>> patch<T extends BaseNetworkModel, K>(
     onReceiveProgress: onReceiveProgress,
     httpDecode: httpDecode,
     converter: converter,
-    responseType: responseType,
+    decodeType: decodeType,
   );
 }
 
@@ -187,7 +187,7 @@ Future<Response> download(
   Object? data,
   Options? options,
 }) async {
-  return await NetWrapper.instance.dio.download(
+  return await NetOptions.instance.dio.download(
     urlPath,
     savePath,
     onReceiveProgress: onReceiveProgress,
@@ -208,7 +208,7 @@ void cancelRequests({CancelToken? cancelToken}) {
 }
 
 /// A method to make http request, which is a alias of  [dio.fetch(RequestOptions)].
-Future<Result<K>> _realRequest<T extends BaseNetworkModel, K>(
+Future<Result<K>> _execute<T extends BaseNetworkModel, K>(
   String path,
   String method, {
   Object? data,
@@ -219,13 +219,13 @@ Future<Result<K>> _realRequest<T extends BaseNetworkModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T responseType,
+  required T decodeType,
 }) async {
   if (!await NetworkConnectivity.connected) {
     return const Result.failure(msg: '网络未连接');
   }
   try {
-    final response = await NetWrapper.instance.dio.request(
+    final response = await NetOptions.instance.dio.request(
       path,
       data: data,
       queryParameters: queryParameters,
@@ -239,7 +239,7 @@ Future<Result<K>> _realRequest<T extends BaseNetworkModel, K>(
     } else {
       var decode = await compute(
           _mapCompute<T, K>,
-          _MapBean<T>(response, responseType,
+          _MapBean<T>(response, decodeType,
               httpDecode ?? DefaultNetDecoder.getInstance()));
       return Result.success(decode);
     }
@@ -260,14 +260,14 @@ Future<Result<K>> _realRequest<T extends BaseNetworkModel, K>(
 /// A method to decode the response. use isolate
 K _mapCompute<T extends BaseNetworkModel, K>(_MapBean<T> bean) {
   return bean.httpDecode
-      .decode(response: bean.response, responseType: bean.responseType);
+      .decode(response: bean.response, decodeType: bean.decodeType);
 }
 
 /// `_MapBean` is a class that is used to pass parameters to the isolate.
 class _MapBean<T> {
   final Response<dynamic> response;
-  final T responseType;
+  final T decodeType;
   final NetDecoder httpDecode;
 
-  _MapBean(this.response, this.responseType, this.httpDecode);
+  _MapBean(this.response, this.decodeType, this.httpDecode);
 }

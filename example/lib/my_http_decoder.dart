@@ -13,7 +13,7 @@ class MyHttpDecoder extends NetDecoder {
 
   @override
   K decode<T extends BaseNetworkModel, K>(
-      {required Response<dynamic> response, required T responseType}) {
+      {required Response<dynamic> response, required T decodeType}) {
     var errorCode = response.data['errorCode'];
 
     /// 请求成功
@@ -21,10 +21,10 @@ class MyHttpDecoder extends NetDecoder {
       var data = response.data['data'];
       if (data is List) {
         var dataList = List<T>.from(
-            data.map((item) => responseType.fromJson(item)).toList()) as K;
+            data.map((item) => decodeType.fromJson(item)).toList()) as K;
         return dataList;
       } else {
-        var model = responseType.fromJson(data) as K;
+        var model = decodeType.fromJson(data) as K;
         return model;
       }
     } else {

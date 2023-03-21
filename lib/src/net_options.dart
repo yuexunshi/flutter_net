@@ -4,12 +4,12 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../flutter_net.dart';
 import 'default_net_decoder.dart';
 
-class NetWrapper {
+class NetOptions {
   /// private constructor
-  NetWrapper._() : _httpConfigBuilder = HttpConfigBuilder();
+  NetOptions._() : _httpConfigBuilder = HttpConfigBuilder();
 
   /// the one and only instance of this singleton
-  static final instance = NetWrapper._();
+  static final instance = NetOptions._();
 
   final HttpConfigBuilder _httpConfigBuilder;
 
@@ -23,63 +23,63 @@ class NetWrapper {
   bool _isLogger = true;
 
   /// Setting the base url for the http request.
-  NetWrapper setBaseUrl(String baseUrl) {
+  NetOptions setBaseUrl(String baseUrl) {
     _httpConfigBuilder.setBaseUrl(baseUrl);
     return instance;
   }
 
   /// Setting the connection timeout for the http request.
-  NetWrapper setConnectTimeout(Duration connectTimeout) {
+  NetOptions setConnectTimeout(Duration connectTimeout) {
     _httpConfigBuilder.setConnectTimeout(connectTimeout);
     return instance;
   }
 
   /// Adding headers to the request.
-  NetWrapper addHeaders(Map<String, dynamic> headers) {
+  NetOptions addHeaders(Map<String, dynamic> headers) {
     _httpConfigBuilder.addHeaders(headers);
     return instance;
   }
 
   /// Setting the httpClientAdapter for the http request.
   ///  ex: proxy Certificate
-  NetWrapper setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
+  NetOptions setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
     _httpConfigBuilder.setHttpClientAdapter(httpClientAdapter);
     return instance;
   }
 
   /// Adding an interceptor to the dio instance.
-  NetWrapper addInterceptor(Interceptor interceptor) {
+  NetOptions addInterceptor(Interceptor interceptor) {
     _httpConfigBuilder.addInterceptor(interceptor);
     return instance;
   }
 
   /// Adding all the interceptors to the dio instance.
-  NetWrapper addAllInterceptors(List<Interceptor> interceptors) {
+  NetOptions addAllInterceptors(List<Interceptor> interceptors) {
     _httpConfigBuilder.addAllInterceptors(interceptors);
     return instance;
   }
 
   /// Setting the timeout for receiving data.
-  NetWrapper setReceiveTimeout(Duration receiveTimeout) {
+  NetOptions setReceiveTimeout(Duration receiveTimeout) {
     _httpConfigBuilder.setReceiveTimeout(receiveTimeout);
     return instance;
   }
 
   /// Setting the timeout for sending data.
-  NetWrapper setSendTimeout(Duration sendTimeout) {
+  NetOptions setSendTimeout(Duration sendTimeout) {
     _httpConfigBuilder.setSendTimeout(sendTimeout);
     return instance;
   }
 
   /// Used to set the decoder for the response.
-  NetWrapper setHttpDecoder(NetDecoder httpDecoder) {
+  NetOptions setHttpDecoder(NetDecoder httpDecoder) {
     _httpDecoder = httpDecoder;
     return instance;
   }
 
   /// Used to enable/disable the logger.
   /// 默认使用 PrettyDioLogger 打印
-  NetWrapper enableLogger(bool enable) {
+  NetOptions enableLogger(bool enable) {
     _isLogger = enable;
     return instance;
   }

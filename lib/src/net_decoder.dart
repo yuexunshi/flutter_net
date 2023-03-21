@@ -11,5 +11,5 @@ abstract class NetDecoder {
   ///  [T] BaseNetworkModel的实现
   ///  [K] 返回类型
   K decode<T extends BaseNetworkModel, K>(
-      {required Response<dynamic> response, required T responseType});
+      {required Response<dynamic> response, required T decodeType});
 }
