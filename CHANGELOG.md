@@ -4,5 +4,9 @@
 ## 0.0.2
 
 * 命名更改：
-    配置类NetWrapper->NetOptions
-    responseType->decodeType
+    - 配置类NetWrapper->NetOptions
+    - responseType->decodeType
+  
+## 0.0.3
+
+* 导出`dio`
