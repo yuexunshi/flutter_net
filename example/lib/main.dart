@@ -5,6 +5,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nb_net/flutter_net.dart';
+import 'package:flutter_nb_net/io.dart';
 import 'model/banner_model.dart';
 import 'model/collect_model.dart';
 import 'model/user_model.dart';
@@ -21,9 +22,9 @@ void main() {
       // 代理/https
       .setHttpClientAdapter(IOHttpClientAdapter()
         ..onHttpClientCreate = (client) {
-          client.findProxy = (uri) {
-            return 'PROXY 192.168.20.43:8888';
-          };
+          // client.findProxy = (uri) {
+          //   return 'PROXY 192.168.20.43:8888';
+          // };
           client.badCertificateCallback =
               (X509Certificate cert, String host, int port) => true;
           return client;

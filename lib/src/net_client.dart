@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../flutter_net.dart';
 import 'default_net_decoder.dart';
