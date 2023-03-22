@@ -1,6 +1,6 @@
 name: flutter_nb_net
 description: A powerful HTTP package for Dart/Flutter,base on dio.
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/yuexunshi/flutter_net
 
 environment:
