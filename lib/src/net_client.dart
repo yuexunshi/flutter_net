@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import '../flutter_net.dart';
-import 'default_net_decoder.dart';
 import 'network_connectivity.dart';
 import 'typedefs.dart';
 
@@ -239,7 +238,7 @@ Future<Result<K>> _execute<T extends BaseNetworkModel, K>(
       var decode = await compute(
           _mapCompute<T, K>,
           _MapBean<T>(response, decodeType,
-              httpDecode ?? DefaultNetDecoder.getInstance()));
+              httpDecode ?? NetOptions.instance.httpDecoder));
       return Result.success(decode);
     }
   } on DioError catch (diorError) {
