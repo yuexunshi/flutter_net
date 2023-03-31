@@ -1,6 +1,6 @@
 import 'package:flutter_nb_net/flutter_net.dart';
 
-class UserModel extends BaseNetworkModel<UserModel> {
+class UserModel extends BaseNetModel {
   UserModel({
     bool? admin,
     List<String>? chapterTops,
@@ -41,7 +41,7 @@ class UserModel extends BaseNetworkModel<UserModel> {
     }
     _coinCount = json['coinCount'];
     _collectIds =
-    json['collectIds'] != null ? json['collectIds'].cast<num>() : [];
+        json['collectIds'] != null ? json['collectIds'].cast<num>() : [];
     _email = json['email'];
     _icon = json['icon'];
     _id = json['id'];

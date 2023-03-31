@@ -1,6 +1,6 @@
 import 'package:flutter_nb_net/flutter_net.dart';
 
-class UserWrapperModel extends BaseNetworkModel<UserWrapperModel> {
+class UserWrapperModel extends BaseNetModel {
   UserWrapperModel({
     Data? data,
     num? errorCode,

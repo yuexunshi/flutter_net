@@ -14,7 +14,7 @@ class DefaultNetDecoder extends NetDecoder {
   factory DefaultNetDecoder.getInstance() => _instance;
 
   @override
-  K decode<T extends BaseNetworkModel, K>(
+  K decode<T extends BaseNetModel, K>(
       {required Response<dynamic> response, required T decodeType}) {
     if (response.data is List) {
       var list = response.data as List;
