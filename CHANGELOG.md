@@ -18,3 +18,7 @@
 ## 0.0.5
 
 * fix全局配置解码器无效
+
+## 0.0.6
+
+* BaseNetworkModel ->BaseNetModel 去掉泛型约束
