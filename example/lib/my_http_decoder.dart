@@ -12,7 +12,7 @@ class MyHttpDecoder extends NetDecoder {
   factory MyHttpDecoder.getInstance() => _instance;
 
   @override
-  K decode<T extends BaseNetworkModel, K>(
+  K decode<T extends BaseNetModel, K>(
       {required Response<dynamic> response, required T decodeType}) {
     var errorCode = response.data['errorCode'];
 

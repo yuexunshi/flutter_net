@@ -20,15 +20,15 @@ void main() {
       // baseUrl
       .setBaseUrl("https://www.wanandroid.com/")
       // 代理/https
-      .setHttpClientAdapter(IOHttpClientAdapter()
-        ..onHttpClientCreate = (client) {
-          // client.findProxy = (uri) {
-          //   return 'PROXY 192.168.20.43:8888';
-          // };
-          client.badCertificateCallback =
-              (X509Certificate cert, String host, int port) => true;
-          return client;
-        })
+      // .setHttpClientAdapter(IOHttpClientAdapter()
+      //   ..onHttpClientCreate = (client) {
+      //     client.findProxy = (uri) {
+      //       return 'PROXY 192.168.20.43:8888';
+      //     };
+      //     client.badCertificateCallback =
+      //         (X509Certificate cert, String host, int port) => true;
+      //     return client;
+      //   })
       // cookie
       .addInterceptor(CookieManager(CookieJar()))
       // dio_http_cache
@@ -101,11 +101,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  /// Get 请求
+  /// Get 请求原始数据
   void requestGet() async {
-    var appResponse = await get<BannerModel, BannerModel>("banner/json",
-        decodeType: BannerModel());
-    appResponse.when(success: (BannerModel model) {
+    var appResponse = await get("banner/json");
+    appResponse.when(success: (dynamic) {
+      // var size = model.data?.length;
+      debugPrint("成功返回$dynamic");
+    }, failure: (String msg, int code) {
+      debugPrint("失败了：msg=$msg/code=$code");
+    });
+  }
+
+  /// Get 请求数据，不带泛型
+  void requestGet1() async {
+    var appResponse = await get("banner/json",decodeType: BannerModel());
+    appResponse.when(success: (model) {
+      var size = model.data?.length;
+      debugPrint("成功返回$size条");
+    }, failure: (String msg, int code) {
+      debugPrint("失败了：msg=$msg/code=$code");
+    });
+  }
+
+  /// Get 请求数据，完整的泛型
+  void requestGet2() async {
+    var appResponse = await get<BannerModel,BannerModel>("banner/json",decodeType: BannerModel());
+    appResponse.when(success: (model) {
       var size = model.data?.length;
       debugPrint("成功返回$size条");
     }, failure: (String msg, int code) {
@@ -220,7 +241,19 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 requestGet();
               },
-              child: const Text('Get'),
+              child: const Text('Get,原始数据'),
+            ),
+            TextButton(
+              onPressed: () {
+                requestGet1();
+              },
+              child: const Text('Get 不带泛型'),
+            ),
+            TextButton(
+              onPressed: () {
+                requestGet2();
+              },
+              child: const Text('Get 带泛型'),
             ),
             TextButton(
               onPressed: () {

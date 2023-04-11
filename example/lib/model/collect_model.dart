@@ -8,7 +8,7 @@ import 'package:flutter_nb_net/flutter_net.dart';
 /// size : 20
 /// total : 1
 
-class CollectModel extends BaseNetworkModel<CollectModel> {
+class CollectModel extends BaseNetModel {
   CollectModel({
       this.curPage, 
       this.datas, 

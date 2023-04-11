@@ -4,7 +4,7 @@ import 'network_connectivity.dart';
 import 'typedefs.dart';
 
 /// Handy method to make http GET request, which is a alias of  [dio.fetch(RequestOptions)].
-Future<Result<K>> get<T extends BaseNetworkModel, K>(
+Future<Result<K>> get<T extends BaseNetModel, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -13,7 +13,7 @@ Future<Result<K>> get<T extends BaseNetworkModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -32,7 +32,7 @@ Future<Result<K>> get<T extends BaseNetworkModel, K>(
 }
 
 /// Handy method to make http POST request, which is a alias of  [dio.fetch(RequestOptions)].
-Future<Result<K>> post<T extends BaseNetworkModel, K>(
+Future<Result<K>> post<T extends BaseNetModel, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -42,7 +42,7 @@ Future<Result<K>> post<T extends BaseNetworkModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -62,7 +62,7 @@ Future<Result<K>> post<T extends BaseNetworkModel, K>(
 }
 
 /// Handy method to make http PUT request, which is a alias of  [dio.fetch(RequestOptions)].
-Future<Result<K>> put<T extends BaseNetworkModel, K>(
+Future<Result<K>> put<T extends BaseNetModel, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -72,7 +72,7 @@ Future<Result<K>> put<T extends BaseNetworkModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -92,7 +92,7 @@ Future<Result<K>> put<T extends BaseNetworkModel, K>(
 }
 
 /// Handy method to make http HEAD request, which is a alias of [dio.fetch(RequestOptions)].
-Future<Result<K>> head<T extends BaseNetworkModel, K>(
+Future<Result<K>> head<T extends BaseNetModel, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -100,7 +100,7 @@ Future<Result<K>> head<T extends BaseNetworkModel, K>(
   CancelToken? cancelToken,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -118,7 +118,7 @@ Future<Result<K>> head<T extends BaseNetworkModel, K>(
 }
 
 /// Handy method to make http DELETE request, which is a alias of  [dio.fetch(RequestOptions)].
-Future<Result<K>> delete<T extends BaseNetworkModel, K>(
+Future<Result<K>> delete<T extends BaseNetModel, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -126,7 +126,7 @@ Future<Result<K>> delete<T extends BaseNetworkModel, K>(
   CancelToken? cancelToken,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -144,7 +144,7 @@ Future<Result<K>> delete<T extends BaseNetworkModel, K>(
 }
 
 /// Handy method to make http PATCH request, which is a alias of  [dio.fetch(RequestOptions)].
-Future<Result<K>> patch<T extends BaseNetworkModel, K>(
+Future<Result<K>> patch<T extends BaseNetModel, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -154,7 +154,7 @@ Future<Result<K>> patch<T extends BaseNetworkModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -206,7 +206,7 @@ void cancelRequests({CancelToken? cancelToken}) {
 }
 
 /// A method to make http request, which is a alias of  [dio.fetch(RequestOptions)].
-Future<Result<K>> _execute<T extends BaseNetworkModel, K>(
+Future<Result<K>> _execute<T extends BaseNetModel, K>(
   String path,
   String method, {
   Object? data,
@@ -217,7 +217,7 @@ Future<Result<K>> _execute<T extends BaseNetworkModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   if (!await NetworkConnectivity.connected) {
     return const Result.failure(msg: '网络未连接');
@@ -232,7 +232,9 @@ Future<Result<K>> _execute<T extends BaseNetworkModel, K>(
       onSendProgress: onSendProgress,
       cancelToken: cancelToken,
     );
-    if (converter != null) {
+    if (decodeType == null) {
+      return Result.success(response.data as K);
+    }else if (converter != null) {
       return await compute(converter, response);
     } else {
       var decode = await compute(
@@ -256,7 +258,7 @@ Future<Result<K>> _execute<T extends BaseNetworkModel, K>(
 }
 
 /// A method to decode the response. use isolate
-K _mapCompute<T extends BaseNetworkModel, K>(_MapBean<T> bean) {
+K _mapCompute<T extends BaseNetModel, K>(_MapBean<T> bean) {
   return bean.httpDecode
       .decode(response: bean.response, decodeType: bean.decodeType);
 }
