@@ -13,7 +13,7 @@ Future<Result<K>> get<T extends BaseNetModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -42,7 +42,7 @@ Future<Result<K>> post<T extends BaseNetModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -72,7 +72,7 @@ Future<Result<K>> put<T extends BaseNetModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -100,7 +100,7 @@ Future<Result<K>> head<T extends BaseNetModel, K>(
   CancelToken? cancelToken,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -126,7 +126,7 @@ Future<Result<K>> delete<T extends BaseNetModel, K>(
   CancelToken? cancelToken,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -154,7 +154,7 @@ Future<Result<K>> patch<T extends BaseNetModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   assert(!(httpDecode != null && converter != null),
       'httpDecode和converter不能同时赋值，请删除一个');
@@ -217,7 +217,7 @@ Future<Result<K>> _execute<T extends BaseNetModel, K>(
   ProgressCallback? onReceiveProgress,
   NetDecoder? httpDecode,
   NetConverter<K>? converter,
-  required T decodeType,
+  T? decodeType,
 }) async {
   if (!await NetworkConnectivity.connected) {
     return const Result.failure(msg: '网络未连接');
@@ -232,7 +232,9 @@ Future<Result<K>> _execute<T extends BaseNetModel, K>(
       onSendProgress: onSendProgress,
       cancelToken: cancelToken,
     );
-    if (converter != null) {
+    if (decodeType == null) {
+      return Result.success(response.data as K);
+    }else if (converter != null) {
       return await compute(converter, response);
     } else {
       var decode = await compute(
