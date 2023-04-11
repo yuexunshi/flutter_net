@@ -92,6 +92,27 @@ dependencies:
       debugPrint("失败了：msg=$msg/code=$code");
     });
 ```
+泛型一样，也可以不写：
+```
+    var appResponse = await get("banner/json",
+        responseType: BannerModel());
+    appResponse.when(success: (BannerModel model) {
+      var size = model.data?.length;
+      debugPrint("成功返回$size条");
+    }, failure: (String msg, int code) {
+      debugPrint("失败了：msg=$msg/code=$code");
+    });
+```
+需要原始数据的请求：
+```
+    var appResponse = await get("banner/json");
+    appResponse.when(success: (dynamic) {
+      // var size = model.data?.length;
+      debugPrint("成功返回$dynamic");
+    }, failure: (String msg, int code) {
+      debugPrint("失败了：msg=$msg/code=$code");
+    });
+```
 ## Additional information
 
 [代码仓库](https://github.com/yuexunshi/flutter_net)
