@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var appResponse = await get("banner/json",decodeType: BannerModel());
     appResponse.when(success: (model) {
       var size = model.data?.length;
-      debugPrint("成功返回$size条");
+      debugPrint("不带泛型成功返回$size条");
     }, failure: (String msg, int code) {
       debugPrint("失败了：msg=$msg/code=$code");
     });

@@ -4,6 +4,7 @@ import 'network_connectivity.dart';
 import 'typedefs.dart';
 
 /// Handy method to make http GET request, which is a alias of  [dio.fetch(RequestOptions)].
+/// decodeType 为空返回原始数据
 Future<Result<K>> get<T extends BaseNetModel, K>(
   String path, {
   Object? data,
@@ -32,6 +33,7 @@ Future<Result<K>> get<T extends BaseNetModel, K>(
 }
 
 /// Handy method to make http POST request, which is a alias of  [dio.fetch(RequestOptions)].
+/// decodeType 为空返回原始数据
 Future<Result<K>> post<T extends BaseNetModel, K>(
   String path, {
   Object? data,
@@ -62,6 +64,7 @@ Future<Result<K>> post<T extends BaseNetModel, K>(
 }
 
 /// Handy method to make http PUT request, which is a alias of  [dio.fetch(RequestOptions)].
+/// decodeType 为空返回原始数据
 Future<Result<K>> put<T extends BaseNetModel, K>(
   String path, {
   Object? data,
@@ -92,6 +95,7 @@ Future<Result<K>> put<T extends BaseNetModel, K>(
 }
 
 /// Handy method to make http HEAD request, which is a alias of [dio.fetch(RequestOptions)].
+/// decodeType 为空返回原始数据
 Future<Result<K>> head<T extends BaseNetModel, K>(
   String path, {
   Object? data,
@@ -118,6 +122,7 @@ Future<Result<K>> head<T extends BaseNetModel, K>(
 }
 
 /// Handy method to make http DELETE request, which is a alias of  [dio.fetch(RequestOptions)].
+/// decodeType 为空返回原始数据
 Future<Result<K>> delete<T extends BaseNetModel, K>(
   String path, {
   Object? data,
@@ -144,6 +149,7 @@ Future<Result<K>> delete<T extends BaseNetModel, K>(
 }
 
 /// Handy method to make http PATCH request, which is a alias of  [dio.fetch(RequestOptions)].
+/// decodeType 为空返回原始数据
 Future<Result<K>> patch<T extends BaseNetModel, K>(
   String path, {
   Object? data,
