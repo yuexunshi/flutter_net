@@ -22,3 +22,7 @@
 ## 0.0.6
 
 * BaseNetworkModel ->BaseNetModel 去掉泛型约束
+
+## 1.0.0
+
+* 去掉泛型约束,`decodeType`为空直接返回原始数据
