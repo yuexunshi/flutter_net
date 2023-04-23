@@ -89,7 +89,15 @@ class NetOptions {
       _dio.interceptors.addAll(httpConfig.interceptors!);
     }
     if (_isLogger) {
-      dio.interceptors.add(PrettyDioLogger());
+      dio.interceptors.add(PrettyDioLogger(
+          requestHeader: true,
+          requestBody: true,
+          responseBody: true,
+          responseHeader: false,
+          error: true,
+          compact: true,
+          maxWidth: 90
+      ));
     }
     _dio.options = BaseOptions(
         baseUrl: httpConfig.baseUrl ?? '',
