@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nb_net/flutter_net.dart';
-import 'package:flutter_nb_net/io.dart';
 import 'model/banner_model.dart';
 import 'model/collect_model.dart';
 import 'model/user_model.dart';
@@ -114,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Get 请求数据，不带泛型
   void requestGet1() async {
-    var appResponse = await get("banner/json",decodeType: BannerModel());
+    var appResponse = await get("banner/json", decodeType: BannerModel());
     appResponse.when(success: (model) {
       var size = model.data?.length;
       debugPrint("不带泛型成功返回$size条");
@@ -125,7 +123,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Get 请求数据，完整的泛型
   void requestGet2() async {
-    var appResponse = await get<BannerModel,BannerModel>("banner/json",decodeType: BannerModel());
+    var appResponse = await get<BannerModel, BannerModel>("banner/json",
+        decodeType: BannerModel());
     appResponse.when(success: (model) {
       var size = model.data?.length;
       debugPrint("成功返回$size条");
@@ -139,10 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var appResponse = await post<UserWrapperModel, UserWrapperModel>(
         "user/login",
         decodeType: UserWrapperModel(),
-        queryParameters: {
-          "username": '你的账号',
-          "password": '你的密码'
-        });
+        queryParameters: {"username": '你的账号', "password": '你的密码'});
     appResponse.when(success: (UserWrapperModel model) {
       var nickname = model.data?.nickname;
       debugPrint("成功返回nickname=$nickname");
@@ -209,18 +205,19 @@ class _MyHomePageState extends State<MyHomePage> {
     var appResponse = await get<BannerModel, List<BannerBean>>("banner/json",
         options: buildCacheOptions(const Duration(days: 7)),
         decodeType: BannerModel(), converter: (response) {
-          var errorCode = response.data['errorCode'];
-          /// 请求成功
-          if (errorCode == 0) {
-            var data = response.data['data'];
-            var dataList = List<BannerBean>.from(
-                data.map((item) => BannerBean.fromJson(item)).toList());
-            return Result.success(dataList);
-          } else {
-            var errorMsg = response.data['errorMsg'];
-            return Result.failure(msg: errorMsg, code: errorCode);
-          }
-        });
+      var errorCode = response.data['errorCode'];
+
+      /// 请求成功
+      if (errorCode == 0) {
+        var data = response.data['data'];
+        var dataList = List<BannerBean>.from(
+            data.map((item) => BannerBean.fromJson(item)).toList());
+        return Result.success(dataList);
+      } else {
+        var errorMsg = response.data['errorMsg'];
+        return Result.failure(msg: errorMsg, code: errorCode);
+      }
+    });
     appResponse.when(success: (List<BannerBean> model) {
       debugPrint("成功返回${model.length}条");
     }, failure: (String msg, int code) {
