@@ -8,5 +8,3 @@ export 'src/net_client.dart';
 export 'src/base_net_model.dart';
 export 'src/net_exception.dart';
 export 'package:dio/dio.dart';
-
-

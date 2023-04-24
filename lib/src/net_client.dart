@@ -233,14 +233,14 @@ Future<Result<K>> _execute<T extends BaseNetModel, K>(
       path,
       data: data,
       queryParameters: queryParameters,
-      options: DioMixin.checkOptions(method, options),
+      options: _checkOptions(method, options),
       onReceiveProgress: onReceiveProgress,
       onSendProgress: onSendProgress,
       cancelToken: cancelToken,
     );
     if (decodeType == null) {
       return Result.success(response.data as K);
-    }else if (converter != null) {
+    } else if (converter != null) {
       return await compute(converter, response);
     } else {
       var decode = await compute(
@@ -261,6 +261,12 @@ Future<Result<K>> _execute<T extends BaseNetModel, K>(
     if (kDebugMode) print("$path => TypeError${e.toString()}");
     return Result.failure(msg: e.toString());
   }
+}
+
+Options _checkOptions(String method, Options? options) {
+  options ??= Options();
+  options.method = method;
+  return options;
 }
 
 /// A method to decode the response. use isolate
