@@ -34,6 +34,7 @@ mixin _$Result<T> {
     required TResult Function(String msg, int code) failure,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data)? success,
@@ -41,12 +42,14 @@ mixin _$Result<T> {
     required TResult Function() orElse,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Success<T> value) success,
     required TResult Function(Failure<T> value) failure,
   }) =>
       throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Success<T> value)? success,
@@ -67,6 +70,7 @@ class _$ResultCopyWithImpl<T, $Res> implements $ResultCopyWith<T, $Res> {
   _$ResultCopyWithImpl(this._value, this._then);
 
   final Result<T> _value;
+
   // ignore: unused_field
   final $Res Function(Result<T>) _then;
 }
@@ -75,14 +79,15 @@ class _$ResultCopyWithImpl<T, $Res> implements $ResultCopyWith<T, $Res> {
 abstract class $SuccessCopyWith<T, $Res> {
   factory $SuccessCopyWith(Success<T> value, $Res Function(Success<T>) then) =
       _$SuccessCopyWithImpl<T, $Res>;
+
   $Res call({T data});
 }
 
 /// @nodoc
 class _$SuccessCopyWithImpl<T, $Res> extends _$ResultCopyWithImpl<T, $Res>
     implements $SuccessCopyWith<T, $Res> {
-  _$SuccessCopyWithImpl(Success<T> _value, $Res Function(Success<T>) _then)
-      : super(_value, (v) => _then(v as Success<T>));
+  _$SuccessCopyWithImpl(Success<T> value, $Res Function(Success<T>) then)
+      : super(value, (v) => then(v as Success<T>));
 
   @override
   Success<T> get _value => super._value as Success<T>;
@@ -125,7 +130,7 @@ class _$Success<T> implements Success<T> {
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(data);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   $SuccessCopyWith<T, Success<T>> get copyWith =>
       _$SuccessCopyWithImpl<T, Success<T>>(this, _$identity);
@@ -179,7 +184,8 @@ abstract class Success<T> implements Result<T> {
   const factory Success(T data) = _$Success<T>;
 
   T get data => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SuccessCopyWith<T, Success<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -188,14 +194,15 @@ abstract class Success<T> implements Result<T> {
 abstract class $FailureCopyWith<T, $Res> {
   factory $FailureCopyWith(Failure<T> value, $Res Function(Failure<T>) then) =
       _$FailureCopyWithImpl<T, $Res>;
+
   $Res call({String msg, int code});
 }
 
 /// @nodoc
 class _$FailureCopyWithImpl<T, $Res> extends _$ResultCopyWithImpl<T, $Res>
     implements $FailureCopyWith<T, $Res> {
-  _$FailureCopyWithImpl(Failure<T> _value, $Res Function(Failure<T>) _then)
-      : super(_value, (v) => _then(v as Failure<T>));
+  _$FailureCopyWithImpl(Failure<T> value, $Res Function(Failure<T>) then)
+      : super(value, (v) => then(v as Failure<T>));
 
   @override
   Failure<T> get _value => super._value as Failure<T>;
@@ -251,7 +258,7 @@ class _$Failure<T> implements Failure<T> {
       const DeepCollectionEquality().hash(msg) ^
       const DeepCollectionEquality().hash(code);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   $FailureCopyWith<T, Failure<T>> get copyWith =>
       _$FailureCopyWithImpl<T, Failure<T>>(this, _$identity);
@@ -305,8 +312,10 @@ abstract class Failure<T> implements Result<T> {
   const factory Failure({String msg, int code}) = _$Failure<T>;
 
   String get msg => throw _privateConstructorUsedError;
+
   int get code => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FailureCopyWith<T, Failure<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

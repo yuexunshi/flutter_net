@@ -1,6 +1,13 @@
 name: flutter_nb_net
-description: A powerful HTTP package for Dart/Flutter,base on dio.
-version: 1.0.1
+
+description: |
+  A powerful HTTP package for Dart/Flutter,base on dio.
+  which supports Global settings, Interceptors,
+  FormData, Aborting and canceling a request,
+  Files uploading and downloading,
+  Requests timeout, Custom adapters, etc.
+
+version: 1.0.2
 homepage: https://github.com/yuexunshi/flutter_net
 
 environment:
