@@ -34,13 +34,13 @@ and the Flutter guide for
 
 ```
 dependencies:
-  flutter_nb_net: ^0.0.1
+  flutter_nb_net: ^1.0.3
 ```
 
 ## Usage
 全局配置：
 ```dart
- NetWrapper.instance
+ NetOptions.instance
       // header
       .addHeaders({"aaa": '111'})
       // baseUrl

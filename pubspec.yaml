@@ -7,7 +7,7 @@ description: |
   Files uploading and downloading,
   Requests timeout, Custom adapters, etc.
 
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/yuexunshi/flutter_net
 
 environment:
@@ -17,16 +17,23 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dio: ^5.1.1
+  dio: ^5.1.2
   pretty_dio_logger: ^1.3.1
   freezed_annotation: ^2.2.0
-  connectivity_plus: ^3.0.3
+  connectivity_plus: ^3.0.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
 
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

@@ -33,9 +33,9 @@ dependencies:
     sdk: flutter
   flutter_nb_net:
     path: ../
-  cookie_jar: ^3.0.1
-  dio_cookie_manager: ^2.1.2 # latest version
-  dio_cache_interceptor: ^3.4.0
+  cookie_jar:
+  dio_cookie_manager:
+  dio_cache_interceptor: ^3.4.2
   dio_http_cache: ^0.3.0 #latest version
 
   # The following adds the Cupertino Icons font to your application.
@@ -43,8 +43,8 @@ dependencies:
   cupertino_icons: ^1.0.5
 
 dependency_overrides:
-  dio: ^5.1.1
-  json_annotation: ^4.8.0
+  dio: ^5.1.2
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:
