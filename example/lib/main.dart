@@ -15,7 +15,6 @@ void main() {
   NetOptions.instance
       // header
       .addHeaders({"aaa": '111'})
-      // baseUrl
       .setBaseUrl("https://www.wanandroid.com/")
       // 代理/https
       // .setHttpClientAdapter(IOHttpClientAdapter()
@@ -147,6 +146,33 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  /// Post 请求
+  void requestPostFile() async {
+    var path =
+        '/Users/apple/Library/Developer/CoreSimulator/Devices/89F6C1CC-378B-48B3-9B8F-BA43E7870781/data/Containers/Data/Application/05B810A0-7552-4C3A-8080-800C06A15EC7/tmp/image_picker_289C3878-B39A-41AC-907F-18AE7A9DAE6E-8483-00001BCFA0738BBB.jpg';
+    // /Users/apple/Library/Developer/CoreSimulator/Devices/89F6C1CC-378B-48B3-9B8F-BA43E7870781/data/Containers/Data/Application/05B810A0-7552-4C3A-8080-800C06A15EC7/tmp/image_cropper_CAE43778-5308-4CC7-8E37-4F3BF349F17A-8483-00001BBCCBDDBD46.jpg
+
+    // await request('/v1/task/task/headPortrait', data: params, options: {
+    //   'method': 'post',
+    //   'contentType': 'formData',
+    // });
+
+    var params = {'file': await MultipartFile.fromFile(path)};
+
+    var appResponse = await post<UserWrapperModel, UserWrapperModel>(
+        "v1/task/task/headPortrait",
+        options: Options(contentType: 'formData'),
+        decodeType: UserWrapperModel(),
+        data: params);
+
+    appResponse.when(success: (UserWrapperModel model) {
+      var nickname = model.data?.nickname;
+      debugPrint("成功返回nickname=$nickname");
+    }, failure: (String msg, int code) {
+      debugPrint("失败了：msg=$msg/code=$code");
+    });
+  }
+
   /// 自定义Decoder的 Post 请求
   void requestCustomDecoderPost() async {
     var appResponse = await post<UserModel, UserModel>("user/login",
@@ -251,6 +277,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 requestGet2();
               },
               child: const Text('Get 带泛型'),
+            ),
+            TextButton(
+              onPressed: () {
+                requestPostFile();
+              },
+              child: const Text('上传图片'),
             ),
             TextButton(
               onPressed: () {

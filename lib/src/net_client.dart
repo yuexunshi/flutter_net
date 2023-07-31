@@ -238,10 +238,10 @@ Future<Result<K>> _execute<T extends BaseNetModel, K>(
       onSendProgress: onSendProgress,
       cancelToken: cancelToken,
     );
-    if (decodeType == null) {
-      return Result.success(response.data as K);
-    } else if (converter != null) {
+    if (converter != null) {
       return await compute(converter, response);
+    } else if (decodeType == null) {
+      return Result.success(response.data as K);
     } else {
       var decode = await compute(
           _mapCompute<T, K>,
