@@ -150,7 +150,7 @@ Future<Result<K>> delete<T, K>(
 
 /// Handy method to make http PATCH request, which is a alias of  [dio.fetch(RequestOptions)].
 /// decodeType 为空返回原始数据
-Future<Result<K>> patch<T , K>(
+Future<Result<K>> patch<T, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -240,8 +240,6 @@ Future<Result<K>> _execute<T, K>(
     );
     if (converter != null) {
       return await compute(converter, response);
-    } else if (decodeType == null) {
-      return Result.success(response.data as K);
     } else {
       var decode = await compute(
           _mapCompute<T, K>,
@@ -249,11 +247,11 @@ Future<Result<K>> _execute<T, K>(
               httpDecode ?? NetOptions.instance.httpDecoder));
       return Result.success(decode);
     }
-  } on DioError catch (diorError) {
-    if (kDebugMode) print("$path => DioError${diorError.message}");
+  } on DioError catch (e) {
+    if (kDebugMode) print("$path => DioError${e.message}");
     return Result.failure(
-        msg: diorError.message ?? '',
-        code: diorError.response?.statusCode ?? -1);
+        msg: e.message ?? '',
+        code: e.response?.statusCode ?? -1);
   } on NetException catch (e) {
     if (kDebugMode) print("$path => NetException${e.toString()}");
     return Result.failure(msg: e.message, code: e.code);
@@ -278,7 +276,7 @@ K _mapCompute<T, K>(_MapBean<T> bean) {
 /// `_MapBean` is a class that is used to pass parameters to the isolate.
 class _MapBean<T> {
   final Response<dynamic> response;
-  final T decodeType;
+  final T? decodeType;
   final NetDecoder httpDecode;
 
   _MapBean(this.response, this.decodeType, this.httpDecode);
