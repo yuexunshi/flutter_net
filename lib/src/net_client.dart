@@ -5,7 +5,7 @@ import 'typedefs.dart';
 
 /// Handy method to make http GET request, which is a alias of  [dio.fetch(RequestOptions)].
 /// decodeType 为空返回原始数据
-Future<Result<K>> get<T extends BaseNetModel, K>(
+Future<Result<K>> get<T, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -34,7 +34,7 @@ Future<Result<K>> get<T extends BaseNetModel, K>(
 
 /// Handy method to make http POST request, which is a alias of  [dio.fetch(RequestOptions)].
 /// decodeType 为空返回原始数据
-Future<Result<K>> post<T extends BaseNetModel, K>(
+Future<Result<K>> post<T, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -65,7 +65,7 @@ Future<Result<K>> post<T extends BaseNetModel, K>(
 
 /// Handy method to make http PUT request, which is a alias of  [dio.fetch(RequestOptions)].
 /// decodeType 为空返回原始数据
-Future<Result<K>> put<T extends BaseNetModel, K>(
+Future<Result<K>> put<T, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -96,7 +96,7 @@ Future<Result<K>> put<T extends BaseNetModel, K>(
 
 /// Handy method to make http HEAD request, which is a alias of [dio.fetch(RequestOptions)].
 /// decodeType 为空返回原始数据
-Future<Result<K>> head<T extends BaseNetModel, K>(
+Future<Result<K>> head<T, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -123,7 +123,7 @@ Future<Result<K>> head<T extends BaseNetModel, K>(
 
 /// Handy method to make http DELETE request, which is a alias of  [dio.fetch(RequestOptions)].
 /// decodeType 为空返回原始数据
-Future<Result<K>> delete<T extends BaseNetModel, K>(
+Future<Result<K>> delete<T, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -150,7 +150,7 @@ Future<Result<K>> delete<T extends BaseNetModel, K>(
 
 /// Handy method to make http PATCH request, which is a alias of  [dio.fetch(RequestOptions)].
 /// decodeType 为空返回原始数据
-Future<Result<K>> patch<T extends BaseNetModel, K>(
+Future<Result<K>> patch<T, K>(
   String path, {
   Object? data,
   Map<String, dynamic>? queryParameters,
@@ -212,7 +212,7 @@ void cancelRequests({CancelToken? cancelToken}) {
 }
 
 /// A method to make http request, which is a alias of  [dio.fetch(RequestOptions)].
-Future<Result<K>> _execute<T extends BaseNetModel, K>(
+Future<Result<K>> _execute<T, K>(
   String path,
   String method, {
   Object? data,
@@ -225,7 +225,7 @@ Future<Result<K>> _execute<T extends BaseNetModel, K>(
   NetConverter<K>? converter,
   T? decodeType,
 }) async {
-  if (!await NetworkConnectivity.connected) {
+  if (!await NetworkConnectivity().connected) {
     return const Result.failure(msg: '网络未连接');
   }
   try {
@@ -240,8 +240,6 @@ Future<Result<K>> _execute<T extends BaseNetModel, K>(
     );
     if (converter != null) {
       return await compute(converter, response);
-    } else if (decodeType == null) {
-      return Result.success(response.data as K);
     } else {
       var decode = await compute(
           _mapCompute<T, K>,
@@ -249,11 +247,10 @@ Future<Result<K>> _execute<T extends BaseNetModel, K>(
               httpDecode ?? NetOptions.instance.httpDecoder));
       return Result.success(decode);
     }
-  } on DioError catch (diorError) {
-    if (kDebugMode) print("$path => DioError${diorError.message}");
+  } on DioError catch (e) {
+    if (kDebugMode) print("$path => DioError${e.message}");
     return Result.failure(
-        msg: diorError.message ?? '',
-        code: diorError.response?.statusCode ?? -1);
+        msg: e.message ?? '', code: e.response?.statusCode ?? -1);
   } on NetException catch (e) {
     if (kDebugMode) print("$path => NetException${e.toString()}");
     return Result.failure(msg: e.message, code: e.code);
@@ -270,7 +267,7 @@ Options _checkOptions(String method, Options? options) {
 }
 
 /// A method to decode the response. use isolate
-K _mapCompute<T extends BaseNetModel, K>(_MapBean<T> bean) {
+K _mapCompute<T, K>(_MapBean<T> bean) {
   return bean.httpDecode
       .decode(response: bean.response, decodeType: bean.decodeType);
 }
@@ -278,7 +275,7 @@ K _mapCompute<T extends BaseNetModel, K>(_MapBean<T> bean) {
 /// `_MapBean` is a class that is used to pass parameters to the isolate.
 class _MapBean<T> {
   final Response<dynamic> response;
-  final T decodeType;
+  final T? decodeType;
   final NetDecoder httpDecode;
 
   _MapBean(this.response, this.decodeType, this.httpDecode);

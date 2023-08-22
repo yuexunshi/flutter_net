@@ -12,20 +12,23 @@ class MyHttpDecoder extends NetDecoder {
   factory MyHttpDecoder.getInstance() => _instance;
 
   @override
-  K decode<T extends BaseNetModel, K>(
-      {required Response<dynamic> response, required T decodeType}) {
+  K decode<T, K>({required Response<dynamic> response,  T? decodeType}) {
     var errorCode = response.data['errorCode'];
 
     /// 请求成功
     if (errorCode == 0) {
       var data = response.data['data'];
-      if (data is List) {
-        var dataList = List<T>.from(
-            data.map((item) => decodeType.fromJson(item)).toList()) as K;
-        return dataList;
+      if (decodeType is BaseNetModel) {
+        if (data is List) {
+          var dataList = List<T>.from(
+              data.map((item) => decodeType.fromJson(item)).toList()) as K;
+          return dataList;
+        } else {
+          var model = decodeType.fromJson(data) as K;
+          return model;
+        }
       } else {
-        var model = decodeType.fromJson(data) as K;
-        return model;
+        return data as K;
       }
     } else {
       var errorMsg = response.data['errorMsg'];
