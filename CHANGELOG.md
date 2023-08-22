@@ -53,3 +53,6 @@
 ## 2.0.1
 
 * fix bug
+## 2.0.2
+
+* fix net check bug

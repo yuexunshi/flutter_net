@@ -225,7 +225,7 @@ Future<Result<K>> _execute<T, K>(
   NetConverter<K>? converter,
   T? decodeType,
 }) async {
-  if (!await NetworkConnectivity.connected) {
+  if (!await NetworkConnectivity().connected) {
     return const Result.failure(msg: '网络未连接');
   }
   try {
@@ -250,8 +250,7 @@ Future<Result<K>> _execute<T, K>(
   } on DioError catch (e) {
     if (kDebugMode) print("$path => DioError${e.message}");
     return Result.failure(
-        msg: e.message ?? '',
-        code: e.response?.statusCode ?? -1);
+        msg: e.message ?? '', code: e.response?.statusCode ?? -1);
   } on NetException catch (e) {
     if (kDebugMode) print("$path => NetException${e.toString()}");
     return Result.failure(msg: e.message, code: e.code);
